@@ -65,11 +65,12 @@ class _SearchScreenState extends State<SearchScreen> {
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
             ),
             SizedBox(height: 20),
-            Expanded(
+            SizedBox(
+              height: 100,
               child: Stack(
                 children: <Widget>[
                   Container(
-                    color: Theme.of(context).selectedRowColor,
+                    color: Palette.yellow,
                     child: Center(
                       child: Text(
                         lastWords,
