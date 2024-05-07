@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:busyoong/ui/palette.dart';
 
 class CardButton extends StatelessWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final IconData? icon;
   final String string;
   final Color color;
@@ -25,9 +25,9 @@ class CardButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (icon != null) // 아이콘이 있는 경우에만 보여줍니다.
+              if (icon != null)
                 Icon(icon, color: Palette.white, size: 50,),
-              if (icon != null) // 아이콘이 있는 경우에만 간격을 추가합니다.
+              if (icon != null)
                 SizedBox(height: 15,),
               Text(string, style: TextStyle(color: Palette.white, fontSize: 22, fontWeight: FontWeight.w800),)
             ],

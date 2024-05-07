@@ -1,18 +1,29 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:flutter/material.dart';
 
-import '../ui/card_button.dart';
-import '../ui/palette.dart';
+class Stt extends StatelessWidget {
+  const Stt({super.key});
 
-class SearchScreen extends StatefulWidget {
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'Flutter Demo',
+      home: SttPage(),
+    );
+  }
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class SttPage extends StatefulWidget {
+  const SttPage({Key? key}) : super(key: key);
+
+  @override
+  _SttPageState createState() => _SttPageState();
+}
+
+class _SttPageState extends State<SttPage> {
   bool _hasSpeech = false;
   bool _logEvents = false;
   double level = 0.0;
@@ -55,51 +66,66 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '어디로 갈까요?',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: Stack(
+    return MaterialApp(
+      home: Scaffold(
+        body: Column(children: [
+          Expanded(
+            flex: 4,
+            child: Container(
+              padding: EdgeInsets.only(top: 100.0),
+              child: Column(
                 children: <Widget>[
-                  Container(
-                    color: Theme.of(context).selectedRowColor,
-                    child: Center(
-                      child: Text(
-                        lastWords,
-                        textAlign: TextAlign.center,
-                      ),
+                  const Center(
+                    child: Text(
+                      '음성 인식 결과',
+                      style: TextStyle(fontSize: 22.0),
+                    ),
+                  ),
+                  Expanded(
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          color: Theme.of(context).selectedRowColor,
+                          child: Center(
+                            child: Text(
+                              lastWords,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            CardButton(
-              '누르고 말하기',
-              onTap: !_hasSpeech || speech.isListening ? null : startListening,
-              icon: Icons.mic_rounded,
-              color: Palette.red,
-              width: 200,
+          ),
+          Container(
+            padding: const EdgeInsets.only(bottom: 50.0),
+            child: Column(
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: !_hasSpeech || speech.isListening
+                          ? null
+                          : startListening,
+                      icon: Icon(Icons.mic),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(top: 0.0),
+                        child: const Text("click!",
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.blue)))
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 15),
-            CardButton(
-              '취소',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              color: Palette.gray,
-              width: 200,
-              height: 70,
-            ),
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
