@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:busyoong/ui/card_button.dart'; // CardButton import
-import 'package:busyoong/ui/palette.dart'; // Palette import
-
 
 class FavoriteScreen extends StatefulWidget {
   @override
