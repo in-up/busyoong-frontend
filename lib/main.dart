@@ -25,7 +25,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       home: homeRoute,
       routes: routes,
       theme: ThemeData(
-        useMaterial3: false,
+        useMaterial3: true,
         canvasColor: Color(0xFFfcfcfc),
         fontFamily: 'Pretendard',
         pageTransitionsTheme: const PageTransitionsTheme(builders: {

@@ -9,9 +9,9 @@ import '../screen/home.dart';
 final Widget homeRoute = HomeScreen();
 
 final Map<String, WidgetBuilder> routes = {
-  '/home' : (context) => HomeScreen(),
-  '/search' : (context) => SearchScreen(),
-  '/result' : (context) => ResultScreen(),
-  '/favorite' : (context) => FavoriteScreen(),
-  '/favorite_search' : (context) => FavoriteSearchScreen(),
+  '/home': (context) => HomeScreen(),
+  '/search': (context) => SearchScreen(),
+  '/result': (context) => ResultScreen(),
+  '/favorite': (context) => FavoriteScreen(),
+  '/favorite_search': (context) => FavoriteSearchScreen(),
 };

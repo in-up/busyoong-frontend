@@ -69,13 +69,11 @@ class _SearchScreenState extends State<SearchScreen> {
               height: 100,
               child: Stack(
                 children: <Widget>[
-                  Container(
-                    color: Palette.yellow,
-                    child: Center(
-                      child: Text(
-                        lastWords,
-                        textAlign: TextAlign.center,
-                      ),
+                  Center(
+                    child: Text(
+                      lastWords,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 26),
                     ),
                   ),
                 ],
@@ -88,6 +86,16 @@ class _SearchScreenState extends State<SearchScreen> {
               icon: Icons.mic_rounded,
               color: Palette.red,
               width: 200,
+            ),
+            SizedBox(height: 15),
+            CardButton(
+              '키보드 입력',
+              onTap: () {
+                _showTextInputDialog(context);
+              },
+              color: Palette.green,
+              width: 200,
+              height: 70,
             ),
             SizedBox(height: 15),
             CardButton(
@@ -123,16 +131,24 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void resultListener(SpeechRecognitionResult result) {
     _logEvent(
-        'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
+        'Result listener final: ${result.finalResult}, words: ${result
+            .recognizedWords}');
     setState(() {
       lastWords = result.recognizedWords;
     });
+
+    if (result.finalResult && lastWords.isNotEmpty) {
+      Navigator.pushNamed(
+        context,
+        '/result',
+        arguments: lastWords,
+      );
+    }
   }
 
   void soundLevelListener(double level) {
     minSoundLevel = min(minSoundLevel, level);
     maxSoundLevel = max(maxSoundLevel, level);
-    // _logEvent('sound level $level: $minSoundLevel - $maxSoundLevel ');
     setState(() {
       this.level = level;
     });
@@ -159,5 +175,46 @@ class _SearchScreenState extends State<SearchScreen> {
       var eventTime = DateTime.now().toIso8601String();
       print('$eventTime $eventDescription');
     }
+  }
+
+  void _showTextInputDialog(BuildContext context) {
+    final TextEditingController _textFieldController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('키보드 입력'),
+          content: TextField(
+            controller: _textFieldController,
+            decoration: InputDecoration(hintText: "어디로 갈까요?"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('돌아가기'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                setState(() {
+                  lastWords = _textFieldController.text;
+                });
+                Navigator.of(context).pop();
+                if (lastWords.isNotEmpty && !speech.isListening) {
+                  Navigator.pushNamed(
+                    context,
+                    '/result',
+                    arguments: lastWords,
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
