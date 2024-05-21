@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
             ),
             SizedBox(height: 20),
-            CardButton('즐겨찾기', onTap:(){}, icon: Icons.star_rounded, color: Palette.yellow),
+            CardButton('즐겨찾기', onTap:(){Navigator.pushNamed(context, '/favorite');}, icon: Icons.star_rounded, color: Palette.yellow),
             SizedBox(height: 15),
             CardButton('우리집', onTap:(){}, icon: Icons.home_rounded, color: Palette.green),
             SizedBox(height: 15),
