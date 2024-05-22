@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 15),
             CardButton('우리집', onTap:(){}, icon: Icons.home_rounded, color: Palette.green),
             SizedBox(height: 15),
-            CardButton('다른 장소', onTap:(){Navigator.pushNamed(context, '/search');}, icon: Icons.more_horiz_rounded, color: Palette.red, width: 200,),
+            CardButton('다른 장소', onTap:(){Navigator.pushNamed(context, '/search');}, icon: Icons.search_rounded, color: Palette.red, width: 200,),
           ],
         ),
       ),

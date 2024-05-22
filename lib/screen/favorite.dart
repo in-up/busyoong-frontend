@@ -1,64 +1,126 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+import '../ui/card_button.dart';
+import '../ui/palette.dart';
 
 class FavoriteScreen extends StatefulWidget {
+  const FavoriteScreen({Key? key}) : super(key: key);
+
   @override
-  _FavoriteScreenState createState() => _FavoriteScreenState();
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  double _opacity = 0.0;
+  var mybox = Hive.box('localdata');
+  List mydata = [];
+
+  var myText = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    /*
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('items', <String>['Earth', 'Moon', 'Sun']);
-    로 저장
-
-
-    final prefs = await SharedPreferences.getInstance();
-    List<String> favoriteList = await prefs.get('favorite');
-    if (favoriteList.length == 0) {
-        밑의 showText부분
-    } else {
-
-    }
-     */
-
-    _showText();
+    getItem();
   }
 
-  void _showText() async {
-    // 1초 동안 자연스럽게 나타남
-    setState(() {
-      _opacity = 1.0;
-    });
-    await Future.delayed(Duration(seconds: 3));
-    // 1초 동안 자연스럽게 사라짐
-    setState(() {
-      _opacity = 0.0;
-    });
-    await Future.delayed(Duration(seconds: 1));
-    // 글자가 사라진 후 SearchScreen으로 이동
-    Navigator.popAndPushNamed(context, '/favorite_search');
+  void addItem(data) async {
+    await mybox.add(data);
+    print(mybox.values);
+  }
+
+  void getItem() {
+    mydata = mybox.keys.map((e) {
+      var res = mybox.get(e);
+      return {'key': e, 'title': res['title']};
+    }).toList();
+    setState(() {});
+  }
+
+  void deleteItem(int index) {
+    mybox.delete(mydata[index]['key']);
+    getItem();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('삭제되었습니다'),
+        duration: Duration(seconds: 1),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('즐겨찾기'),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AnimatedOpacity(
-              opacity: _opacity,
-              duration: Duration(seconds: 1),
-              child: Text(
-                '자주 가는 곳을 말해주세요',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+            // SizedBox(
+            //   height: 30,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 20),
+            //   child: TextField(
+            //     controller: myText,
+            //     decoration: InputDecoration(hintText: 'item'),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+            // ElevatedButton.icon(
+            //   onPressed: () {
+            //     Map<String, String> d = {
+            //       'title': myText.text,
+            //     };
+            //     addItem(d);
+            //     myText.clear();
+            //     getItem();
+            //   },
+            //   icon: Icon(Icons.save),
+            //   label: Text('save'),
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: mydata.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      "${mydata[index]['title']}",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/result',
+                        arguments: mydata[index]['title'],
+                      );
+                    },
+                    onLongPress: () {
+                      deleteItem(index);
+                    },
+                  );
+                },
               ),
             ),
+            CardButton(
+              '처음으로',
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              color: Palette.gray,
+              width: 200,
+              height: 70,
+            ),
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
