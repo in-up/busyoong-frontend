@@ -87,6 +87,7 @@ class _BusScreenState extends State<BusScreen> {
       fastArrive = items.map<String>((item) => item['routeno'].toString()).toList();
       resultText = '정보를 가져왔습니다';
       // Adding the shortest bus information to the list
+      print(fastArrive);
       if (shortestBusInfo != null) {
         fastArrive.add('가장 짧은 시간: ${shortestBusInfo['arrtime'] ~/ 60}분 ${shortestBusInfo['routeno']}번');
       }
@@ -96,6 +97,7 @@ class _BusScreenState extends State<BusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Palette.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
