@@ -87,6 +87,8 @@ class _FavoriteSearchScreenState extends State<FavoriteSearchScreen> {
               onTap: !_hasSpeech || speech.isListening ? null : startListening,
               icon: Icons.mic_rounded,
               color: Palette.red,
+              textColor: Palette.white,
+              iconColor: Palette.white,
               width: 200,
             ),
             SizedBox(height: 15),
@@ -96,6 +98,8 @@ class _FavoriteSearchScreenState extends State<FavoriteSearchScreen> {
                 Navigator.of(context).pop();
               },
               color: Palette.gray,
+              textColor: Palette.white,
+              iconColor: Palette.white,
               width: 200,
               height: 70,
             ),

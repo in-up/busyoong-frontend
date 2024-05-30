@@ -47,9 +47,20 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
+  void saveAsHome(String title) async {
+    await mybox.put('home', {'title': title});
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('우리집으로 저장되었습니다'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Palette.white,
       appBar: AppBar(
         title: const Text('즐겨찾기'),
         centerTitle: true,
@@ -57,34 +68,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       body: Center(
         child: Column(
           children: [
-            // SizedBox(
-            //   height: 30,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 20),
-            //   child: TextField(
-            //     controller: myText,
-            //     decoration: InputDecoration(hintText: 'item'),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            // ElevatedButton.icon(
-            //   onPressed: () {
-            //     Map<String, String> d = {
-            //       'title': myText.text,
-            //     };
-            //     addItem(d);
-            //     myText.clear();
-            //     getItem();
-            //   },
-            //   icon: Icon(Icons.save),
-            //   label: Text('save'),
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
             Expanded(
               child: ListView.builder(
                 itemCount: mydata.length,
@@ -92,19 +75,24 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   return ListTile(
                     title: Text(
                       "${mydata[index]['title']}",
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                     ),
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        '/result',
+                        '/bus',
                         arguments: mydata[index]['title'],
                       );
                     },
                     onLongPress: () {
                       deleteItem(index);
                     },
+                    trailing: IconButton(
+                      icon: Icon(Icons.home_rounded),
+                      onPressed: () {
+                        saveAsHome(mydata[index]['title']);
+                      },
+                    ),
                   );
                 },
               ),
@@ -115,6 +103,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 Navigator.of(context).pop();
               },
               color: Palette.gray,
+              textColor: Palette.black,
+              iconColor: Palette.white,
               width: 200,
               height: 70,
             ),

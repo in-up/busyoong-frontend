@@ -56,59 +56,69 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              '어디로 갈까요?',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              height: 100,
-              child: Stack(
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      lastWords,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 26),
-                    ),
+      backgroundColor: Palette.white,
+      appBar: AppBar(
+        title: const Text('목적지 검색'),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '목적지를 말씀해주세요.',
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+          ),
+          SizedBox(height: 20),
+          SizedBox(
+            height: 200,
+            child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    lastWords,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 26),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            CardButton(
-              '누르고 말하기',
-              onTap: !_hasSpeech || speech.isListening ? null : startListening,
-              icon: Icons.mic_rounded,
-              color: Palette.red,
-              width: 200,
-            ),
-            SizedBox(height: 15),
-            CardButton(
-              '키보드 입력',
-              onTap: () {
-                _showTextInputDialog(context);
-              },
-              color: Palette.green,
-              width: 200,
-              height: 70,
-            ),
-            SizedBox(height: 15),
-            CardButton(
-              '취소',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              color: Palette.gray,
-              width: 200,
-              height: 70,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 20),
+          CardButton(
+            '누르고 말하기',
+            onTap: !_hasSpeech || speech.isListening ? null : startListening,
+            icon: Icons.mic_rounded,
+            color: Palette.blue,
+            textColor: Palette.white,
+            iconColor: Palette.white,
+            width: 250,
+            height: 220,
+          ),
+          SizedBox(height: 5),
+          CardButton(
+            '키보드로 입력',
+            onTap: () {
+              _showTextInputDialog(context);
+            },
+            color: Palette.gray,
+            textColor: Palette.black,
+            iconColor: Palette.white,
+            width: 250,
+            height: 80,
+          ),
+          SizedBox(height: 5),
+          CardButton(
+            '취소',
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            color: Palette.gray,
+            textColor: Palette.black,
+            iconColor: Palette.white,
+            width: 250,
+            height: 80,
+          ),
+        ],
       ),
     );
   }

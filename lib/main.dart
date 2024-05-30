@@ -1,3 +1,4 @@
+import 'package:busyoong/ui/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,6 +34,11 @@ class _MyAppState extends ConsumerState<MyApp> {
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           TargetPlatform.windows: CupertinoPageTransitionsBuilder()
         }),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          elevation: 0
+        ),
+        cardTheme: const CardTheme(elevation: 0),
+        appBarTheme: const AppBarTheme(color: Palette.white,)
       ),
     );
   }
