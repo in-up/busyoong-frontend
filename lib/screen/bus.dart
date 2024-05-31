@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../ui/card_button.dart';
 import '../ui/palette.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BusScreen extends StatefulWidget {
   @override
@@ -96,25 +99,79 @@ class _BusScreenState extends State<BusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    late GoogleMapController mapController;
+    final LatLng _center = const LatLng(37.2973874, 127.0398951);
+
+    void _onMapCreated(GoogleMapController controller) {
+      mapController = controller;
+    }
     return Scaffold(
       backgroundColor: Palette.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              resultText,
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+      appBar: AppBar(
+        title: const Text('버스 검색 결과'),
+        centerTitle: true,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                color: Palette.white,
+                child: SizedBox(
+                  height: 300,
+                  child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                        target: _center,
+                        zoom: 15.0,
+                      ),
+                      markers: {
+                        Marker(
+                            markerId: MarkerId('userLocation'),
+                            position: _center
+                        )
+                      },
+                      gestureRecognizers: {
+                        Factory<OneSequenceGestureRecognizer>(() => ScaleGestureRecognizer()),
+                      }
+                  ),
+                ),
+              ),
             ),
-            Column(
-              children: [
-                Text('빠르게 도착하는 버스: ${fastArrive.join(", ")}'),
-                Text('소요 시간이 짧은 버스: ${shortTime.join(", ")}'),
-                Text('출발 정류장: ${startBusStop.join(", ")}'),
-              ],
-            ),
-            SizedBox(height: 15),
-            CardButton(
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(color: Palette.green, onPressed: () {  }, icon: Icon(Icons.directions_bus_filled_rounded, size: 40,),),
+              SizedBox(width: 20,),
+              Text(
+                resultText,
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Column(
+            children: [
+              Text('빠르게 도착하는 버스: ${fastArrive.join(", ")}'),
+              Text('소요 시간이 짧은 버스: ${shortTime.join(", ")}'),
+              Text('출발 정류장: ${startBusStop.join(", ")}'),
+            ],
+          ),
+          SizedBox(height: 15),
+          Expanded(child: Container()),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: CardButton(
               '처음으로',
               onTap: () {
                 Navigator.of(context).pop();
@@ -125,8 +182,8 @@ class _BusScreenState extends State<BusScreen> {
               width: 200,
               height: 70,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -24,7 +24,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           onPressed: (){},
           child: Text(
             '알림이 없습니다.',
-            style: TextStyle(fontSize: 18, color: Palette.black),
+            style: TextStyle(fontSize: 24, color: Palette.black),
           ),
         ),
       ),
