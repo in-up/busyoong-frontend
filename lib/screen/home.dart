@@ -3,6 +3,7 @@ import 'package:busyoong/ui/palette.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -17,9 +18,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(37.2973874, 127.0398951);
+  String? _mapStyle;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    if (_mapStyle != null) {
+      controller.setMapStyle(_mapStyle);
+    }
   }
 
   var mybox = Hive.box('localdata');
@@ -30,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _loadMapStyle();
     getItem();
   }
 
@@ -38,6 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didUpdateWidget(oldWidget);
     // 홈 화면이 다시 활성화될 때마다 데이터를 업데이트합니다.
     getItem();
+  }
+
+  Future _loadMapStyle() async {
+    _mapStyle = await rootBundle.loadString('assets/map.json');
   }
 
   void addItem(Map<String, dynamic> data) async {
@@ -145,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onMapCreated: _onMapCreated,
                             initialCameraPosition: CameraPosition(
                               target: _center,
-                              zoom: 15.0,
+                              zoom: 16.0,
                             ),
                             markers: {
                               Marker(

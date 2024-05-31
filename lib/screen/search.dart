@@ -27,9 +27,11 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-
     initSpeechState();
   }
+
+
+
 
   Future<void> initSpeechState() async {
     var hasSpeech = await speech.initialize(
@@ -68,24 +70,26 @@ class _SearchScreenState extends State<SearchScreen> {
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
           ),
           SizedBox(height: 20),
-          SizedBox(
-            height: 200,
-            child: Stack(
-              children: <Widget>[
-                Center(
+          Expanded(child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(35),
+              child: Container(
+                color: Palette.gray,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   child: Text(
                     lastWords,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 26),
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ),),
           SizedBox(height: 20),
           CardButton(
             '누르고 말하기',
-            onTap: !_hasSpeech || speech.isListening ? null : startListening,
+            onTap: !_hasSpeech || speech.isListening ? cancelListening : startListening,
             icon: Icons.mic_rounded,
             color: Palette.blue,
             textColor: Palette.white,
@@ -122,6 +126,20 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  void cancelListening() {
+    if (speech.isListening) {
+      speech.stop();
+      if (lastWords.isNotEmpty) {
+        cancelListening();
+        Navigator.pushNamed(
+          context,
+          '/result',
+          arguments: lastWords,
+        );
+      }
+    }
+  }
+
   void startListening() {
     lastWords = '';
     lastError = '';
@@ -136,7 +154,15 @@ class _SearchScreenState extends State<SearchScreen> {
       listenMode: ListenMode.dictation,
     );
     setState(() {});
+
+    // 음성 인식 시작 후 5초 후에 자동으로 취소
+    Future.delayed(Duration(seconds: 5), () {
+      if (speech.isListening) {
+        cancelListening();
+      }
+    });
   }
+
 
   void resultListener(SpeechRecognitionResult result) {
     setState(() {
@@ -144,6 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
     });
 
     if (result.finalResult && lastWords.isNotEmpty) {
+      cancelListening();
       Navigator.pushNamed(
         context,
         '/result',
@@ -197,7 +224,11 @@ class _SearchScreenState extends State<SearchScreen> {
             TextButton(
               child: Text('돌아가기'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/home',
+                      (Route<dynamic> route) => false,
+                );
               },
             ),
             TextButton(

@@ -43,35 +43,22 @@ class _ResultScreenState extends State<ResultScreen> {
         });
       } else {
         setState(() {
-          resultText = '데이터를 불러오지 못했습니다';
+          resultText = '목적지 인식에 실패했어요.\n다시 시도해주세요.';
         });
       }
     } catch (e) {
       // 예외 발생 시 에러를 출력합니다.
       print('Error fetching data: $e');
       setState(() {
-        resultText = '데이터를 불러오지 못했습니다';
+        resultText = '알 수 없는 오류입니다.\n다시 시도해주세요.';
       });
     }
   }
 
-
-
-  void addItem(data) async {
-    await mybox.add(data);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('즐겨찾기에 추가되었습니다.'),
-        duration: Duration(seconds: 1),
-      ),
-    );
-    setState(() {});
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Palette.white,
       appBar: AppBar(
         title: const Text('검색어 확인'),
         centerTitle: true,
@@ -80,53 +67,69 @@ class _ResultScreenState extends State<ResultScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              resultText,
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+            SizedBox(height: 50,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                '아래 목적지로 출발할까요?',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: Palette.blue),
+              ),
             ),
             SizedBox(height: 15),
-            CardButton(
-              '즐겨찾기에 추가',
-              onTap: () {
-                Map<String, String> d = {
-                  'title': resultText,
-                };
-                addItem(d);
-              },
-              color: Palette.yellow,
-              textColor: Palette.white,
-              iconColor: Palette.white,
-              width: 200,
-              height: 70,
-            ),
-            SizedBox(height: 15),
-            CardButton(
-              '경로 검색하기',
-              onTap: () {
-                print(resultText);
-                Navigator.pushNamed(
-                  context,
-                  '/bus',
-                  arguments: resultText,
-                );
-              },
-              color: Palette.blue,
-              textColor: Palette.white,
-              iconColor: Palette.white,
-              width: 200,
-              height: 70,
-            ),
-            CardButton(
-              '처음으로',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              color: Palette.gray,
-              textColor: Palette.black,
-              iconColor: Palette.white,
-              width: 200,
-              height: 70,
-            ),
+            Expanded(child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(35),
+                child: Container(
+                  color: Palette.gray,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    child: Text(
+                      resultText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, ),
+                    ),
+                  ),
+                ),
+              ),
+            ),),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(children: [
+                CardButton(
+                  '계속하기',
+                  onTap: () {
+                    print(resultText);
+                    Navigator.pushNamed(
+                      context,
+                      '/bus',
+                      arguments: resultText,
+                    );
+                  },
+                  color: Palette.blue,
+                  textColor: Palette.white,
+                  iconColor: Palette.white,
+                  width: 200,
+                  height: 70,
+                ),
+                SizedBox(height: 10,),
+                CardButton(
+                  '아니에요',
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/home',
+                          (Route<dynamic> route) => false,
+                    );
+                  },
+                  color: Palette.gray,
+                  textColor: Palette.black,
+                  iconColor: Palette.white,
+                  width: 200,
+                  height: 70,
+                ),
+                SizedBox(height: 20,),
+              ],),
+            )
           ],
         ),
       ),
