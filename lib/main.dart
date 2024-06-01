@@ -62,10 +62,20 @@ class LimitedSizeBox extends StatelessWidget {
           double height = constraints.maxHeight;
 
           return Center(
-            child: Container(
-              width: width > maxWidth ? maxWidth : width,
-              color: Colors.white,
-              child: child,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: width > maxWidth ? maxWidth : width,
+                  color: Colors.white,
+                  child: child,
+                ),
+                SizedBox(width: 65,),
+                Container(
+                  width: 550,
+                  child: Image.asset('assets/images/bg.png'),
+                )
+              ],
             ),
           );
         },
