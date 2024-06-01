@@ -71,7 +71,8 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           SizedBox(height: 20),
           Expanded(child: Center(
-            child: ClipRRect(
+            child: lastWords.isEmpty ? SizedBox() :
+            ClipRRect(
               borderRadius: BorderRadius.circular(35),
               child: Container(
                 color: Palette.gray,
@@ -87,7 +88,17 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),),
           SizedBox(height: 20),
-          CardButton(
+          !_hasSpeech || speech.isListening ? CardButton(
+            '듣고 있어요',
+            onTap: !_hasSpeech || speech.isListening ? cancelListening : startListening,
+            icon: Icons.more_horiz_rounded,
+            color: Palette.blueAlt,
+            textColor: Palette.white,
+            iconColor: Palette.white,
+            width: 250,
+            height: 220,
+          )
+              : CardButton(
             '누르고 말하기',
             onTap: !_hasSpeech || speech.isListening ? cancelListening : startListening,
             icon: Icons.mic_rounded,
@@ -121,6 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
             width: 250,
             height: 80,
           ),
+          SizedBox(height: 20),
         ],
       ),
     );

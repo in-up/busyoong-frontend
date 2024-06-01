@@ -23,6 +23,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return LimitedSizeBox(child: child!);
+      },
       home: homeRoute,
       routes: routes,
       theme: ThemeData(
@@ -30,9 +33,9 @@ class _MyAppState extends ConsumerState<MyApp> {
         canvasColor: Color(0xFFfcfcfc),
         fontFamily: 'Pretendard',
         pageTransitionsTheme: const PageTransitionsTheme(builders: {
-          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.windows: CupertinoPageTransitionsBuilder()
+          // TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          // TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          // TargetPlatform.windows: CupertinoPageTransitionsBuilder()
         }),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           elevation: 0
@@ -40,6 +43,34 @@ class _MyAppState extends ConsumerState<MyApp> {
         cardTheme: const CardTheme(elevation: 0),
         appBarTheme: const AppBarTheme(color: Palette.white,)
       ),
+    );
+  }
+}
+
+class LimitedSizeBox extends StatelessWidget {
+  final Widget child;
+
+  LimitedSizeBox({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double maxWidth = 500;
+          double width = constraints.maxWidth;
+          double height = constraints.maxHeight;
+
+          return Center(
+            child: Container(
+              width: width > maxWidth ? maxWidth : width,
+              color: Colors.white,
+              child: child,
+            ),
+          );
+        },
+      ),
+      backgroundColor: Color(0xFF000000),
     );
   }
 }
