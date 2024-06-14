@@ -40,7 +40,6 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                   trailing: IconButton(
                     icon: Icon(Icons.favorite_border),
                     onPressed: () {
-                      // Implement favorite functionality here
                     },
                   ),
                 );

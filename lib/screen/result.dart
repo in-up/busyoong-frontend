@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -33,7 +34,9 @@ class _ResultScreenState extends State<ResultScreen> {
     print('Received argument: $argument');
 
     try {
-      final response = await http.get(Uri.parse('http://127.0.0.1:8000/get-destination/$argument'));
+      String? baseUrl = dotenv.env['BASE_URL'];
+      final response = await http.post(
+          Uri.parse('$baseUrl/get-destination/$argument'));
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -67,7 +70,7 @@ class _ResultScreenState extends State<ResultScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 50,),
+            SizedBox(height: 40,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
@@ -75,7 +78,7 @@ class _ResultScreenState extends State<ResultScreen> {
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: Palette.blue),
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 5),
             Expanded(child: Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(35),
@@ -108,8 +111,8 @@ class _ResultScreenState extends State<ResultScreen> {
                   color: Palette.blue,
                   textColor: Palette.white,
                   iconColor: Palette.white,
-                  width: 200,
-                  height: 70,
+                  width: 250,
+                  height: 80,
                 ),
                 SizedBox(height: 10,),
                 CardButton(
@@ -124,8 +127,8 @@ class _ResultScreenState extends State<ResultScreen> {
                   color: Palette.gray,
                   textColor: Palette.black,
                   iconColor: Palette.white,
-                  width: 200,
-                  height: 70,
+                  width: 250,
+                  height: 80,
                 ),
                 SizedBox(height: 20,),
               ],),

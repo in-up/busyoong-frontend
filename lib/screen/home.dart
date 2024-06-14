@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late GoogleMapController mapController;
-  final LatLng _center = const LatLng(37.2973874, 127.0398951);
+  final LatLng _center = const LatLng(37.2973874, 127.0398951);  // 시연용 출발 위치 설정
   String? _mapStyle;
 
   void _onMapCreated(GoogleMapController controller) {
@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didUpdateWidget(covariant HomeScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // 홈 화면이 다시 활성화될 때마다 데이터를 업데이트합니다.
     getItem();
   }
 
@@ -101,158 +100,153 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: Palette.white,
-      body: Stack(children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      SizedBox(height: 50),
+                      Text(
+                        formattedDate,
+                        style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
                         children: [
-                          SizedBox(height: 50),
                           Text(
-                            formattedDate,
-                            style:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(height: 10,),
-                          Row(
-                            children: [
-                              Text(
-                                '오늘은 어디로 갈까요?',
-                                style: TextStyle(
-                                    fontSize: 28, fontWeight: FontWeight.w900),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 30),
-                        ],
-                      ),
-                      Expanded(child: Container(),),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: IconButton(onPressed: () {  Navigator.pushNamed(context, '/notification'); }, icon: Icon(Icons.notifications_none_rounded, size: 40),),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      color: Palette.white,
-                      child: SizedBox(
-                        height: 200,
-                        child: GoogleMap(
-                            onMapCreated: _onMapCreated,
-                            initialCameraPosition: CameraPosition(
-                              target: _center,
-                              zoom: 16.0,
-                            ),
-                            markers: {
-                              Marker(
-                                  markerId: MarkerId('userLocation'),
-                                  position: _center
-                              )
-                            },
-                            gestureRecognizers: {
-                              Factory<OneSequenceGestureRecognizer>(() => ScaleGestureRecognizer()),
-                            }
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: CardButton(
-                          '즐겨찾기',
-                          onTap: () {
-                            Navigator.pushNamed(context, '/favorite');
-                          },
-                          icon: Icons.star_rounded,
-                          color: Palette.alt,
-                          textColor: Palette.black,
-                          iconColor: Palette.yellow,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: CardButton(
-                          '우리집',
-                          onTap: navigateToHome,
-                          icon: Icons.home_rounded,
-                          color: Palette.alt,
-                          textColor: Palette.black,
-                          iconColor: Palette.green,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 5,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: CardButton(
-                          '목적지 검색하기',
-                          onTap: () {Navigator.pushNamed(context, '/search');},
-                          icon: Icons.near_me_rounded,
-                          color: Palette.blue,
-                          textColor: Palette.white,
-                          iconColor: Palette.white,
-                          radius: 50,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextButton(
-                    onPressed: () {Navigator.pushNamed(
-                      context,
-                      '/setting'
-                    );},
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.settings, size: 18), // 원하는 아이콘을 여기 추가
-                          SizedBox(width: 8), // 아이콘과 텍스트 사이의 간격
-                          Text(
-                            '설정',
-                            style: TextStyle(fontSize: 18),
+                            '오늘은 어디로 갈까요?',
+                            style: TextStyle(
+                                fontSize: 28, fontWeight: FontWeight.w900),
                           ),
                         ],
                       ),
-                    ),
-                  )
-                )
-              ],
+                      SizedBox(height: 30),
+                    ],
+                  ),
+                  Expanded(child: Container(),),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: IconButton(onPressed: () {  Navigator.pushNamed(context, '/notification'); }, icon: Icon(Icons.notifications_none_rounded, size: 40),),
+                  ),
+                ],
+              ),
             ),
-          ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    color: Palette.white,
+                    child: GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(
+                          target: _center,
+                          zoom: 16.0,
+                        ),
+                        markers: {
+                          Marker(
+                              markerId: MarkerId('userLocation'),
+                              position: _center
+                          )
+                        },
+                        gestureRecognizers: {
+                          Factory<OneSequenceGestureRecognizer>(() => ScaleGestureRecognizer()),
+                        }
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: CardButton(
+                      '즐겨찾기',
+                      onTap: () {
+                        Navigator.pushNamed(context, '/favorite');
+                      },
+                      icon: Icons.star_rounded,
+                      color: Palette.alt,
+                      textColor: Palette.black,
+                      iconColor: Palette.yellow,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Expanded(
+                    child: CardButton(
+                      '우리집',
+                      onTap: navigateToHome,
+                      icon: Icons.home_rounded,
+                      color: Palette.alt,
+                      textColor: Palette.black,
+                      iconColor: Palette.green,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 5,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: CardButton(
+                      '목적지 검색하기',
+                      onTap: () {Navigator.pushNamed(context, '/search');},
+                      icon: Icons.near_me_rounded,
+                      color: Palette.blue,
+                      textColor: Palette.white,
+                      iconColor: Palette.white,
+                      radius: 50,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {Navigator.pushNamed(
+                  context,
+                  '/setting'
+                );},
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.settings, size: 18),
+                      SizedBox(width: 8),
+                      Text(
+                        '설정',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            )
+          ],
         ),
-      ]),
+      ),
     );
   }
 }
