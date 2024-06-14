@@ -23,9 +23,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return LimitedSizeBox(child: child!);
-      },
+      // builder: (context, child) {
+      //   return LimitedSizeBox(child: child!);
+      // },
       home: homeRoute,
       routes: routes,
       theme: ThemeData(
@@ -47,40 +47,40 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 }
 
-class LimitedSizeBox extends StatelessWidget {
-  final Widget child;
-
-  LimitedSizeBox({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          double maxWidth = 500;
-          double width = constraints.maxWidth;
-          double height = constraints.maxHeight;
-
-          return Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: width > maxWidth ? maxWidth : width,
-                  color: Colors.white,
-                  child: child,
-                ),
-                SizedBox(width: 65,),
-                Container(
-                  width: 550,
-                  child: Image.asset('assets/images/bg.png'),
-                )
-              ],
-            ),
-          );
-        },
-      ),
-      backgroundColor: Color(0xFF000000),
-    );
-  }
-}
+// class LimitedSizeBox extends StatelessWidget {
+//   final Widget child;
+//
+//   LimitedSizeBox({required this.child});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: LayoutBuilder(
+//         builder: (context, constraints) {
+//           double maxWidth = 500;
+//           double width = constraints.maxWidth;
+//           double height = constraints.maxHeight;
+//
+//           return Center(
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 Container(
+//                   width: width > maxWidth ? maxWidth : width,
+//                   color: Colors.white,
+//                   child: child,
+//                 ),
+//                 SizedBox(width: 65,),
+//                 Container(
+//                   width: 550,
+//                   child: Image.asset('assets/images/bg.png'),
+//                 )
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//       backgroundColor: Color(0xFF000000),
+//     );
+//   }
+// }

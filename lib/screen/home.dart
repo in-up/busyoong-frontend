@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late GoogleMapController mapController;
-  final LatLng _center = const LatLng(37.2973874, 127.0398951);
+  final LatLng _center = const LatLng(37.2973874, 127.0398951);  // 시연용 출발 위치 설정
   String? _mapStyle;
 
   void _onMapCreated(GoogleMapController controller) {
@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didUpdateWidget(covariant HomeScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // 홈 화면이 다시 활성화될 때마다 데이터를 업데이트합니다.
     getItem();
   }
 
@@ -102,12 +101,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Palette.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -234,8 +233,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.settings, size: 18), // 원하는 아이콘을 여기 추가
-                      SizedBox(width: 8), // 아이콘과 텍스트 사이의 간격
+                      Icon(Icons.settings, size: 18),
+                      SizedBox(width: 8),
                       Text(
                         '설정',
                         style: TextStyle(fontSize: 18),

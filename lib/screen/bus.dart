@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,7 +23,7 @@ class _BusScreenState extends State<BusScreen> {
   List<String> fastArrive = [];
   List<Map<String, dynamic>> shortTime = [];
   List<String> startBusStop = [];
-  LatLng destinationLatLng = LatLng(37.2973874, 127.0398951);
+  LatLng destinationLatLng = LatLng(37.2973874, 127.0398951); // 최초 위도 및 경도를 출발지 인근으로 설정
   late GoogleMapController mapController;
 
   var mybox = Hive.box('localdata');
@@ -50,8 +51,9 @@ class _BusScreenState extends State<BusScreen> {
     searchText = argument;
 
     try {
+      String? baseUrl = dotenv.env['BASE_URL'];
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/get-bus-result'),
+        Uri.parse('$baseUrl/get-bus-result'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -160,10 +162,10 @@ class _BusScreenState extends State<BusScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.blue, // 테두리 색상
-                    width: 2, // 테두리 두께
+                    color: Colors.blue,
+                    width: 2,
                   ),
-                  borderRadius: BorderRadius.circular(20), // 테두리 둥글기
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: SizedBox(
                   height: 300,
